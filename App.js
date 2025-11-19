@@ -1,88 +1,20 @@
-import { useState } from "react";
-import { StyleSheet, View, FlatList, Button } from "react-native";
-import { StatusBar } from "expo-status-bar";
-
-import GoalItem from "./components/GoalItem";
-import GoalInput from "./components/GoalInput";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
-  const [modalIsVisible, setModalIsVisible] = useState(false);
-  const [courseGoals, setCourseGoals] = useState([]);
-
-  function startAddGoalHandler() {
-    setModalIsVisible(true);
-  }
-
-  function endAddGoalHandler() {
-    setModalIsVisible(false);
-  }
-
-  function addGoalHandler(enteredGoalText) {
-    setCourseGoals((currentCourseGoals) => [
-      ...currentCourseGoals,
-      { id: Math.random().toString(), text: enteredGoalText },
-    ]);
-
-    setModalIsVisible(false);
-  }
-
-  function deleteGoalHandler(id) {
-    setCourseGoals((currentCourseGoals) => {
-      return currentCourseGoals.filter((goal) => goal.id !== id);
-    });
-  }
-
   return (
-<>
-
-    <StatusBar style="light" />
-
-    <View style={styles.appContainer}>
-
-      <Button
-        title="Add New Goal"
-        color="#5e0acc"
-        onPress={startAddGoalHandler}
-      />
-
-      <GoalInput
-        visible={modalIsVisible}
-        onAddGoal={addGoalHandler}
-        onCancle={endAddGoalHandler}
-      />
-
-      <View style={styles.goalsContainer}>
-        <FlatList
-          data={courseGoals}
-          renderItem={(itemData) => {
-            return (
-              <GoalItem
-                id={itemData.item.id}
-                text={itemData.item.text}
-                onDeleteItem={deleteGoalHandler}
-              />
-            );
-          }}
-          keyExtractor={(item, index) => {
-            return item.id;
-          }}
-          alwaysBounceVertical={false}
-        />
-      </View>
+    <View style={styles.container}>
+      <Text>Open up App.js to start working on your app!</Text>
+      <StatusBar style="auto" />
     </View>
-
-    </>
   );
 }
 
 const styles = StyleSheet.create({
-  appContainer: {
+  container: {
     flex: 1,
-    paddingTop: 50,
-    paddingHorizontal: 16,
-  },
-
-  goalsContainer: {
-    flex: 5,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
