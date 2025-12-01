@@ -14,13 +14,17 @@ import { useEffect } from "react";
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const [userNumber, setUserNumber] = useState(null);
-  const [gameIsOver, setGameIsOver] = useState(true);
-
-  const [fontsLoaded] = useFonts({
+   const [fontsLoaded] = useFonts({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
     "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
   });
+
+  const [userNumber, setUserNumber] = useState(null);
+  const [gameIsOver, setGameIsOver] = useState(true);
+  const [guessRounds , setGuessRounds] = useState(0)
+
+
+ 
 
  useEffect(() => {
     async function hideSplash() {
@@ -40,8 +44,15 @@ export default function App() {
     setGameIsOver(false);
   }
 
-  function GameOverHandler() {
+  function GameOverHandler(numberOfRounds) {
     setGameIsOver(true);
+    setGuessRounds(numberOfRounds)
+  }
+  
+
+  function startNewGameHandler () {
+    setUserNumber(null)
+    setGuessRounds(0)
   }
 
   let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
@@ -53,7 +64,7 @@ export default function App() {
   }
 
   if (gameIsOver && userNumber) {
-    screen = <GameOver />;
+    screen = <GameOver userNumber={userNumber} roundsNumber={guessRounds} onStartNewGame={startNewGameHandler} />;
   }
 
   return (
