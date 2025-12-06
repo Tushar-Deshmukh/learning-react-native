@@ -7,26 +7,23 @@ import GameScreen from "./screens/GameScreen";
 import GameOver from "./screens/GameOverScreen";
 import COLORS from "./constants/colors";
 import { useFonts } from "expo-font";
-import * as SplashScreen from 'expo-splash-screen';
+import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-
+import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-   const [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
     "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
   });
 
   const [userNumber, setUserNumber] = useState(null);
   const [gameIsOver, setGameIsOver] = useState(true);
-  const [guessRounds , setGuessRounds] = useState(0)
+  const [guessRounds, setGuessRounds] = useState(0);
 
-
- 
-
- useEffect(() => {
+  useEffect(() => {
     async function hideSplash() {
       if (fontsLoaded) {
         await SplashScreen.hideAsync();
@@ -46,13 +43,12 @@ export default function App() {
 
   function GameOverHandler(numberOfRounds) {
     setGameIsOver(true);
-    setGuessRounds(numberOfRounds)
+    setGuessRounds(numberOfRounds);
   }
-  
 
-  function startNewGameHandler () {
-    setUserNumber(null)
-    setGuessRounds(0)
+  function startNewGameHandler() {
+    setUserNumber(null);
+    setGuessRounds(0);
   }
 
   let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
@@ -64,23 +60,32 @@ export default function App() {
   }
 
   if (gameIsOver && userNumber) {
-    screen = <GameOver userNumber={userNumber} roundsNumber={guessRounds} onStartNewGame={startNewGameHandler} />;
+    screen = (
+      <GameOver
+        userNumber={userNumber}
+        roundsNumber={guessRounds}
+        onStartNewGame={startNewGameHandler}
+      />
+    );
   }
 
   return (
-    <LinearGradient
-      colors={[COLORS.primary800, COLORS.accent500]}
-      style={styles.rootScreen}
-    >
-      <ImageBackground
-        source={require("./assets/images/background.png")}
-        resizeMode="cover"
+    <>
+      <StatusBar style="light" />
+      <LinearGradient
+        colors={[COLORS.primary800, COLORS.accent500]}
         style={styles.rootScreen}
-        imageStyle={styles.backgroundImage}
       >
-        <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
-      </ImageBackground>
-    </LinearGradient>
+        <ImageBackground
+          source={require("./assets/images/background.png")}
+          resizeMode="cover"
+          style={styles.rootScreen}
+          imageStyle={styles.backgroundImage}
+        >
+          <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
+    </>
   );
 }
 
